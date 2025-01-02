@@ -1,13 +1,16 @@
 post
 http://localhost:3000/v1/product
 {
-    "name": "product",
-    "description": "Ini adalah create product",
-    "price": 1000,
-    "quantityInStock": 10,
-    "categoryId": "59bebb8e-af68-4093-bcff-156ab1de82b3",
-    "userId": "8641e64b-c7af-4ab7-b5ac-29762e9e1ca9"
+  "name": "Introduction to Algorithms",
+  "description": "A comprehensive book on algorithms and data structures.",
+  "price": 49.99,
+  "quantityInStock": 100,
+  "categoryId": "f5a2f713-7233-4e85-b0ee-26fd28f03298",
+  "author": "Thomas H. Cormen",
+  "publisher": "MIT Press",
+  "isbn": "978-0262033848"
 }
+
 
 get
 http://localhost:3000/v1/product
@@ -23,7 +26,9 @@ http://localhost:3000/v1/product/:id
     "price": 2000,
     "quantityInStock": 20,
     "categoryId: "",
-    "userId: ""
+    "author": "update",
+    "publisher": "update",
+    "isbn": "update"
 }
 
 delete

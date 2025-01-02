@@ -14,3 +14,6 @@ http://localhost:3000/v1/auth/login
     "email": "create@gmail.com",
     "password": "password1"
 }
+
+post 
+http://localhost:3000/v1/auth/logout

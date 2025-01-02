@@ -1,0 +1,24 @@
+http://localhost:3000/v1/staff
+{
+  "name": "John Doe",
+  "position": "Sales Manager",
+  "salary": 5000.50,
+  "phoneNumber": "081234567890",
+  "email": "johndoe@example.com"
+}
+
+get staffs
+http://localhost:3000/v1/staff
+
+get staff
+http://localhost:3000/v1/staff/:id
+
+update staff
+http://localhost:3000/v1/staff/:id
+{
+  "salary": 5500.75,
+  "email": "john.doe@newemail.com"
+}
+
+delete staff
+http://localhost:3000/v1/staff/:id

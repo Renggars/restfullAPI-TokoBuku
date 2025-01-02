@@ -91,7 +91,7 @@ const deleteCategoryById = async (categoryId) => {
     throw new ApiError(httpStatus.NOT_FOUND, "Category not found");
   }
 
-  const deleteCategorys = await prisma.category.deleteMany({
+  const deleteCategorys = await prisma.category.delete({
     where: {
       id: categoryId,
     },

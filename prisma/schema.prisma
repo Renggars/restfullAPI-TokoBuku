@@ -7,75 +7,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Staff {
+  id          String          @id @default(uuid())
+  name        String
+  position    String
+  salary      Float
+  phoneNumber String?
+  email       String?         @unique
+  hiredAt     DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  orders      CustomerOrder[]
+}
+
+model DetailTransaksi {
+  id              String        @id @default(uuid())
+  orderId         String        @unique
+  order           CustomerOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  paymentMethod   String
+  shippingAddress String?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
 model User {
-  id              String       @id @default(uuid())
+  id              String          @id @default(uuid())
   name            String
-  email           String?      @unique
-  password        String    
-  role            String       @default("user")
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  isEmailVerified Boolean      @default(false)
+  email           String?         @unique
+  password        String
+  role            String          @default("user")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  isEmailVerified Boolean         @default(false)
   tokens          Token[]
-  products        Product[]
   orders          CustomerOrder[]
 }
 
 model Token {
-  id          String    @id @default(uuid())
-  token       String    @db.VarChar(400)
-  userId      String    
-  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  token       String   @db.VarChar(400)
+  userId      String
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   type        String
   expires     DateTime
-  blacklisted Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  blacklisted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Product {
-  id            String       @id @default(uuid())
-  name          String
-  description   String
-  price         Float
+  id              String      @id @default(uuid())
+  name            String
+  description     String
+  price           Float
   quantityInStock Int
-  categoryId    String
-  category      Category     @relation(fields: [categoryId], references: [id])
-  userId        String
-  user          User         @relation(fields: [userId], references: [id])
-  orderItems    OrderItem[]
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  categoryId      String
+  category        Category    @relation(fields: [categoryId], references: [id])
+  orderItems      OrderItem[]
+  author          String
+  publisher       String
+  isbn            String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
 }
 
 model Category {
   id        String    @id @default(uuid())
   name      String
   products  Product[]
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model CustomerOrder {
-  id          String     @id @default(uuid())
-  totalPrice  Float
-  customerName String
-  customerEmail String
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
-  orderItems  OrderItem[]
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id              String           @id @default(uuid())
+  totalPrice      Float
+  customerName    String
+  customerEmail   String
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderItems      OrderItem[] // One-to-Many: Satu pesanan memiliki banyak item
+  staffId         String?
+  staff           Staff?           @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  detailTransaksi DetailTransaksi? // One-to-One: Satu pesanan memiliki satu detail transaksi
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 }
 
 model OrderItem {
-  id         String    @id @default(uuid())
-  orderId    String
-  order      CustomerOrder     @relation(fields: [orderId], references: [id])
-  productId  String
-  product    Product   @relation(fields: [productId], references: [id])
-  quantity   Int
-  unitPrice  Float
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id        String        @id @default(uuid())
+  orderId   String
+  order     CustomerOrder @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product       @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }

@@ -1,9 +1,9 @@
 post
 http://localhost:3000/v1/orderItem
 {
-    "orderId" : "2b4f3207-a389-4920-b87b-3eeac6de4f01",
-    "productId" : "4f30396f-a94c-414b-b4d4-bbe6ba1fb34b",
-    "quantity" : 5
+  "orderId": "order-id-example",
+  "productId": "product-id-example",
+  "quantity": 3
 }
 
 get

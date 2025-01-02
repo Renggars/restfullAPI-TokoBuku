@@ -25,24 +25,32 @@ const createOrderItem = async (orderId, productId, quantity) => {
     throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
   }
 
-  order.totalPrice += unitPrice * quantity;
-  await orderService.updateOrderById(orderId, { totalPrice: order.totalPrice });
+  // Memulai transaksi untuk memastikan konsistensi data
+  const result = await prisma.$transaction([
+    // Membuat OrderItem
+    prisma.orderItem.create({
+      data: {
+        orderId,
+        productId,
+        quantity,
+        unitPrice,
+      },
+    }),
 
-  product.quantityInStock -= quantity;
-  await productService.updateProductById(productId, {
-    quantityInStock: product.quantityInStock,
-  });
+    // Memperbarui stok produk
+    prisma.product.update({
+      where: { id: productId },
+      data: { quantityInStock: product.quantityInStock - quantity },
+    }),
 
-  const orderItem = await prisma.orderItem.create({
-    data: {
-      orderId,
-      productId,
-      quantity,
-      unitPrice,
-    },
-  });
+    // Memperbarui total harga order
+    prisma.customerOrder.update({
+      where: { id: orderId },
+      data: { totalPrice: order.totalPrice + unitPrice * quantity },
+    }),
+  ]);
 
-  return orderItem;
+  return result[0]; // Mengembalikan OrderItem yang baru dibuat
 };
 
 /**
@@ -95,54 +103,64 @@ const getOrderItemById = async (id) => {
  */
 const updateOrderItemById = async (orderItemId, updateBody) => {
   const { orderId, productId, quantity } = updateBody;
+
   const orderItem = await getOrderItemById(orderItemId);
+  if (!orderItem) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Order item not found");
+  }
 
-  const orderDb = await orderService.getOrderById(orderItem.orderId);
-  orderDb.totalPrice -= orderItem.unitPrice * orderItem.quantity;
-  await orderService.updateOrderById(orderItem.orderId, {
-    totalPrice: orderDb.totalPrice,
-  });
-
-  const productDb = await productService.getProductById(orderItem.productId);
-  productDb.quantityInStock += orderItem.quantity;
-  await productService.updateProductById(orderItem.productId, {
-    quantityInStock: productDb.quantityInStock,
-  });
+  const product = await productService.getProductById(productId);
+  if (!product) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Product not found");
+  }
 
   const order = await orderService.getOrderById(orderId);
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, "Order not found");
   }
 
-  const product = await productService.getProductById(productId);
-  if (!product) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Product fot found");
-  }
-
   const unitPrice = product.price;
-  order.totalPrice += unitPrice * quantity;
-  await orderService.updateOrderById(orderId, {
-    totalPrice: order.totalPrice,
-  });
+  const previousTotal = orderItem.unitPrice * orderItem.quantity;
 
-  product.quantityInStock -= quantity;
-  await productService.updateProductById(productId, {
-    quantityInStock: product.quantityInStock,
-  });
+  // Menggunakan transaksi untuk memastikan atomik (semua sukses atau semua gagal)
+  const result = await prisma.$transaction([
+    // 1. Update harga order lama
+    prisma.customerOrder.update({
+      where: { id: orderId },
+      data: { totalPrice: order.totalPrice - previousTotal },
+    }),
 
-  const updateOrderItem = await prisma.orderItem.update({
-    where: {
-      id: orderItemId,
-    },
-    data: {
-      orderId,
-      productId,
-      quantity,
-      unitPrice,
-    },
-  });
+    // 2. Update stok produk lama (dikembalikan)
+    prisma.product.update({
+      where: { id: orderItem.productId },
+      data: { quantityInStock: product.quantityInStock + orderItem.quantity },
+    }),
 
-  return updateOrderItem;
+    // 3. Update stok produk baru
+    prisma.product.update({
+      where: { id: productId },
+      data: { quantityInStock: product.quantityInStock - quantity },
+    }),
+
+    // 4. Update harga total order dengan harga baru
+    prisma.customerOrder.update({
+      where: { id: orderId },
+      data: { totalPrice: order.totalPrice + unitPrice * quantity },
+    }),
+
+    // 5. Update orderItem
+    prisma.orderItem.update({
+      where: { id: orderItemId },
+      data: {
+        orderId,
+        productId,
+        quantity,
+        unitPrice,
+      },
+    }),
+  ]);
+
+  return result[4]; // M
 };
 
 /**

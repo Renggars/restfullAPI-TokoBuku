@@ -4,7 +4,8 @@ http://localhost:3000/v1/order
     "totalPrice": 0,
     "customerName": "create",
     "customerEmail": "create@gmail.com",
-    "userId": "cc672e85-d6a0-415c-932c-6c39118fe221"
+    "userId": "user-id",  // Gantilah dengan ID user yang valid
+    "staffId": "staff-id"  // Opsional, bisa dihilangkan
 }
 
 get

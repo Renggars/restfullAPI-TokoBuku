@@ -1,0 +1,23 @@
+http://localhost:3000/v1/detailTransaksi
+{
+  "orderId": "d9b741f9-cd0f-41cd-927b-c7128a0a6a30",
+  "paymentMethod": "cash",
+  "shippingAddress": "Jl. Raya No. 10, Jakarta",
+  "notes": "Please handle with care"
+}
+
+//get all detailTransaksi
+http://localhost:3000/v1/detailTransaksi
+
+//getById
+http://localhost:3000/v1/detailTransaksi/:id
+
+//update
+http://localhost:3000/v1/detailTransaksi/:id
+{
+  "paymentMethod": "debit",
+  "shippingAddress": "Jl. Raya No. 20, Jakarta"
+}
+
+//delete 
+http://localhost:3000/v1/detailTransaksi/:id

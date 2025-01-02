@@ -7,13 +7,7 @@ const createOrder = {
     customerName: Joi.string().required(),
     customerEmail: Joi.string().email().required(),
     userId: Joi.string().custom(objectId).required(),
-    orderItems: Joi.array().items(
-      Joi.object().keys({
-        productId: Joi.string().custom(objectId).required(),
-        quantity: Joi.number().integer().positive().required(),
-        price: Joi.number().positive().required(),
-      })
-    ),
+    staffId: Joi.string().custom(objectId).optional(),
   }),
 };
 
@@ -34,13 +28,7 @@ const updateOrder = {
       customerName: Joi.string(),
       customerEmail: Joi.string().email(),
       userId: Joi.string().custom(objectId),
-      orderItems: Joi.array().items(
-        Joi.object().keys({
-          productId: Joi.string().custom(objectId),
-          quantity: Joi.number().integer().positive(),
-          price: Joi.number().positive(),
-        })
-      ),
+      staffId: Joi.string().custom(objectId).optional(),
     })
     .min(1),
 };
