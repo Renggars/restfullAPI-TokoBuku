@@ -11,7 +11,7 @@ Sebelum memulai, pastikan Anda telah menginstal:
 
    Kloning repositori ke komputer lokal Anda:
    ```bash
-   git clone https://github.com/username/nama-repositori.git
+   git clone https://github.com/Renggars/restfullAPI-TokoBuku.git
    ```
 
 2. **Masuk ke direktori proyek**
