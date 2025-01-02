@@ -17,28 +17,28 @@ Sebelum memulai, pastikan Anda telah menginstal:
 2. **Masuk ke direktori proyek**
 
   Pindah ke folder proyek:
-```bash
-cd nama-repositori
-```
+   ```bash
+   cd nama-repositori
+   ```
 
 3. **Instalasi dependensi**
-Instal semua dependensi yang diperlukan menggunakan npm:
+   Instal semua dependensi yang diperlukan menggunakan npm:
    ```bash
-npm install
-```
+   npm install
+   ```
 
 4. **Setup file .env**
 
-buat file .env di root
-Kemudian, buka file .env dan tambahkan konfigurasi berikut:
+   buat file .env di root folder
+   Kemudian, buka file .env dan tambahkan konfigurasi berikut:
    ```bash
-DATABASE_URL=isi_url_database_anda
-PORT=3000
-
-JWT_SECRET=isi_secret_jwt (bebas)
-JWT_ACCESS_EXPIRATION_HOURS=12
-JWT_REFRESH_EXPIRATION_DAYS=30
-```
+   DATABASE_URL=isi_url_database_anda
+   PORT=3000
+   
+   JWT_SECRET=isi_secret_jwt (bebas)
+   JWT_ACCESS_EXPIRATION_HOURS=12
+   JWT_REFRESH_EXPIRATION_DAYS=30
+   ```
 
 5. **Menjalankan Server**
 Menjalankan Server
