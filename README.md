@@ -1206,13 +1206,123 @@ Request Body:
 
 **Endpoint: `POST /v1/auth/staff`**
 
+**Description:** Create a new staff.
+
+#### Validation Schema
+- **name** is a required field
+- **email** must be a valid email address
+- **password** must be atleast 8 characters and atleast 1 letter and 1 number
+- **role** can be either `"user"` or `"admin"`, with `"user"` as the default value
+
+#### Example Request
+```json
+{
+"name": "create",
+"email": "create@gmail.com",
+"password": "password1",
+"role": "admin"
+}
+```
+
+#### Example Response
+```json
+{
+  "status": true,
+  "statusCode": 201,
+  "message": "Success create user",
+  "data": {
+    "id": "1",
+    "name": "...",
+    "email": "...",
+    "password": "...",
+    "role": "....",
+    "createdAt": "...",
+    "updatedAt": "...",
+    "isEmailVerified": false
+  }
+}
+```
+
 - ### Get Staff
 
 **Endpoint: `GET /v1/auth/staff`**
 
+**Description:** Retrieve a list of users.
+
+#### Headers:
+```
+Authorization : Bearer <Input access token here>
+```
+
+#### Example Response
+```json
+   {
+  "status": true,
+  "statusCode": 200,
+  "message": "Success get users",
+  "data": {
+    "users": [
+      {
+        "id": "1",
+        "name": "...",
+        "email": "...",
+        "password": "...",
+        "role": "...",
+        "createdAt": "...",
+        "updatedAt": "....",
+        "isEmailVerified": false
+      },
+
+      /*...*/
+
+      {
+        "id": "50",
+        "name": "...",
+        "email": "...",
+        "password": "...",
+        "role": "....",
+        "createdAt": "...",
+        "updatedAt": "...",
+        "isEmailVerified": false
+      }
+    ],
+    "pagination": {
+      "totalItems": ...,
+      "totalPages": ...,
+      "currentPage": ...
+    }
+  }
+}
+```
+
 - ### Get Staff By Id
 
 **Endpoint: `GET /v1/auth/staff/staffId`**
+
+**Description:** Retrieve a specific staff by their ID.
+
+#### Validation Schema
+URL Parameters:
+- `staffId` (required): The unique identifier of the staff. This should be a valid ObjectId
+  
+#### Example Response
+```json
+{
+  "status": true,
+  "statusCode": 200,
+  "message": "Success get staff",
+  "data": {
+    "id": "5",
+    "name": "...",
+    "email": "...",
+    "password": "...",
+    "role": "....",
+    "createdAt": "...",
+    "updatedAt": "...",
+    "isEmailVerified": false
+  }
+}
+```
 
 - ### Update
 
