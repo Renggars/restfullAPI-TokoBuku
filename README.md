@@ -1200,5 +1200,25 @@ Request Body:
     }
 }
 ```
+## 7. Staff
 
+- ### Create
+
+**Endpoint: `POST /v1/auth/staff`**
+
+- ### Get Staff
+
+**Endpoint: `GET /v1/auth/staff`**
+
+- ### Get Staff By Id
+
+**Endpoint: `GET /v1/auth/staff/staffId`**
+
+- ### Update
+
+**Endpoint: `PUT /v1/auth/staff/staffId`**
+
+- ### Delete
+
+**Endpoint: `POST /v1/auth/staff/staffId`**
 
