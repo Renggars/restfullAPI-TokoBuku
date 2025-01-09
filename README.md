@@ -1328,7 +1328,58 @@ URL Parameters:
 
 **Endpoint: `PUT /v1/auth/staff/staffId`**
 
+**Description:** Update an existing user's information.
+
+#### Validation Schema
+URL Parameters:
+- `staffId` (required): The unique identifier of the staff to be updated. This should be a valid ObjectId
+
+Request Body:
+
+The request body should be a JSON object containing any of the following fields:
+
+- **`name`** (optional): A string representing the user's name.
+- **`email`** (optional): A valid email address.
+- **`password`** (optional): A string that must be at least 8 characters long, containing at least one letter and one number.
+- **`role`** (optional): A string that can either be `"user"` or `"admin"`. The default value is `"user"`.
+- 
+#### Example Request
+```json
+{
+"name": "update",
+"email": "update@gmail.com",
+"password": "password1",
+"role": "admin"
+}
+```
+
 - ### Delete
 
 **Endpoint: `POST /v1/auth/staff/staffId`**
+
+**Description:** This endpoint allows you to delete a user specified by `staffId`.
+
+#### Validation Schema
+**URL Parameters:**'
+- `staffId` (required): The unique identifier of the staff. This should be a valid ObjectId
+
+#### Example Response
+```json
+   output
+   {
+  "status": true,
+  "statusCode": 200,
+  "message": "Success delete staff",
+  "data": {
+   "id": "1",
+    "name": "...",
+    "email": "...",
+    "password": "...",
+    "role": "....",
+    "createdAt": "...",
+    "updatedAt": "...",
+    "isEmailVerified": false
+  }
+}
+```
 
